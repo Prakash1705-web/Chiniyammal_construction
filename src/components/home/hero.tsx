@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 
 type Phase = "closed" | "opening" | "done";
 
-const EASE = "cubic-bezier(0.77, 0, 0.175, 1)";
+// const EASE = "cubic-bezier(0.77, 0, 0.175, 1)";
 
 /* =========================================================
    HELPERS
