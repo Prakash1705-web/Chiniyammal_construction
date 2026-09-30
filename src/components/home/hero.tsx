@@ -505,15 +505,11 @@ const Hero = () => {
   ======================================================= */
 
   return (
-    <section
-      ref={heroRef}
-      id="home"
-      className="
-        relative
-        h-[280vh]
-        bg-[#111]
-      "
-    >
+   <section
+  ref={heroRef}
+  id="home"
+  className="relative h-[240vh] bg-[#111]"
+>
 
       {/* =====================================================
           STICKY HERO VIEWPORT
@@ -565,7 +561,7 @@ const Hero = () => {
 
             filter: `
               brightness(${backgroundBrightness})
-              blur(${imageBlur ? 6 : 0}px)
+              blur(${imageBlur ? 1 : 0}px)
             `,
 
             transition:
@@ -619,8 +615,7 @@ const Hero = () => {
 
             transition:
               "opacity 100ms linear, transform 100ms linear",
-          }}
-        >
+          }}>
 
           <div
             className="
@@ -637,9 +632,7 @@ const Hero = () => {
 
               lg:px-16
 
-              xl:px-20
-            "
-          >
+              xl:px-20">
 
             <div
               className="
@@ -1178,7 +1171,7 @@ const Hero = () => {
 
                 bg-[#D89B35]/10
 
-                blur-3xl
+                blur-2xl
               "
             />
 
@@ -1235,9 +1228,7 @@ const Hero = () => {
                 h-5
 
                 bg-gradient-to-b
-                from-[#d7d0c4]
-                via-[#938a7b]
-                to-[#4c4338]
+         
 
                 shadow-[0_5px_20px_rgba(0,0,0,.8)]
 
@@ -1257,9 +1248,7 @@ const Hero = () => {
                 h-5
 
                 bg-gradient-to-t
-                from-[#d7d0c4]
-                via-[#938a7b]
-                to-[#4c4338]
+                
 
                 shadow-[0_-5px_20px_rgba(0,0,0,.8)]
 
@@ -1279,9 +1268,7 @@ const Hero = () => {
                 w-5
 
                 bg-gradient-to-r
-                from-[#d7d0c4]
-                via-[#938a7b]
-                to-[#4c4338]
+                
 
                 sm:w-7
               "
@@ -1299,9 +1286,8 @@ const Hero = () => {
                 w-5
 
                 bg-gradient-to-l
-                from-[#d7d0c4]
-                via-[#938a7b]
-                to-[#4c4338]
+               
+               
 
                 sm:w-7
               "
@@ -1605,7 +1591,7 @@ const Hero = () => {
 
               bg-[#D89B35]/10
 
-              blur-[80px]
+              blur-[10px]
             "
           />
 
