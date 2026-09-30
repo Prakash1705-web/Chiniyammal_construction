@@ -6,9 +6,11 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
-type Phase = "closed" | "opening" | "done";
+/* =========================================================
+   TYPES
+========================================================= */
 
-const EASE = "cubic-bezier(0.77, 0, 0.175, 1)";
+type Phase = "closed" | "opening" | "done";
 
 /* =========================================================
    HELPERS
@@ -38,12 +40,12 @@ const DoorLeaf = ({
   const isLeft = side === "left";
 
   /*
-    Door starts opening after 35% scroll.
+    DOOR ANIMATION
 
-    0%  → closed
-    35% → still closed
-    35%-85% → opening
-    85% → fully open
+    0%       → Door completely closed
+    35%      → Door still closed
+    35-85%   → Door opens progressively
+    85%+      → Door completely open
   */
 
   const doorProgress = clamp(
@@ -79,7 +81,10 @@ const DoorLeaf = ({
           ? "rotateY(0deg)"
           : `rotateY(${rotation}deg)`,
 
-        opacity: reduce && progress > 0.35 ? 0 : 1,
+        opacity:
+          reduce && progress > 0.35
+            ? 0
+            : 1,
 
         transition: reduce
           ? "opacity 0.3s ease"
@@ -130,6 +135,7 @@ const DoorLeaf = ({
               rgba(255,220,170,.07) 0 2px,
               transparent 3px 11px
             ),
+
             repeating-linear-gradient(
               0deg,
               rgba(0,0,0,.12) 0 1px,
@@ -297,8 +303,11 @@ const DoorLeaf = ({
 ========================================================= */
 
 const Hero = () => {
-
   const heroRef = useRef<HTMLElement | null>(null);
+
+  /* =======================================================
+     STATES
+  ======================================================= */
 
   const [scrollProgress, setScrollProgress] =
     useState(0);
@@ -308,6 +317,30 @@ const Hero = () => {
 
   const [reduce, setReduce] =
     useState(false);
+
+  /*
+    IMPORTANT
+
+    This state controls the 0.5 second
+    delayed background blur.
+  */
+
+  const [imageBlur, setImageBlur] =
+    useState(false);
+
+  /* =======================================================
+     BLUR AFTER 0.5 SECOND
+  ======================================================= */
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setImageBlur(true);
+    }, 500);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, []);
 
   /* =======================================================
      REDUCED MOTION
@@ -342,11 +375,9 @@ const Hero = () => {
   ======================================================= */
 
   useEffect(() => {
-
     let animationFrame = 0;
 
     const handleScroll = () => {
-
       if (!heroRef.current) return;
 
       if (animationFrame) {
@@ -354,9 +385,7 @@ const Hero = () => {
       }
 
       animationFrame = requestAnimationFrame(() => {
-
-        const section =
-          heroRef.current;
+        const section = heroRef.current;
 
         if (!section) return;
 
@@ -364,16 +393,14 @@ const Hero = () => {
           section.getBoundingClientRect();
 
         /*
-          Hero section is taller than viewport.
+          Hero section is 280vh.
 
-          When:
-          rect.top = 0
-          → progress = 0
+          Progress:
 
-          When:
-          hero section is almost completely
-          scrolled through
-          → progress = 1
+          0   → Top of hero
+          0.35 → Door starts opening
+          0.85 → Door fully open
+          1   → Hero animation complete
         */
 
         const scrollableHeight =
@@ -395,9 +422,9 @@ const Hero = () => {
 
         setScrollProgress(progress);
 
-        /*
-          PHASE
-        */
+        /* =================================================
+           PHASE
+        ================================================= */
 
         if (progress < 0.35) {
           setPhase("closed");
@@ -406,7 +433,6 @@ const Hero = () => {
         } else {
           setPhase("done");
         }
-
       });
     };
 
@@ -421,7 +447,6 @@ const Hero = () => {
     handleScroll();
 
     return () => {
-
       window.removeEventListener(
         "scroll",
         handleScroll
@@ -432,81 +457,57 @@ const Hero = () => {
           animationFrame
         );
       }
-
     };
-
   }, []);
 
   /* =======================================================
-     DOOR VALUES
+     DOOR ZOOM
   ======================================================= */
-
-  /*
-    Door zoom.
-
-    Start:
-    1.00
-
-    End:
-    1.18
-  */
 
   const doorScale = reduce
     ? 1
     : 1 + scrollProgress * 0.18;
 
-  /*
-    Background brightness.
-
-    Closed:
-    dark
-
-    Opening:
-    brighter
-
-    Open:
-    fully visible
-  */
+  /* =======================================================
+     BACKGROUND BRIGHTNESS
+  ======================================================= */
 
   const backgroundBrightness =
     0.18 +
     scrollProgress * 0.67;
 
-  /*
-    Branding disappears while door opens.
-  */
+  /* =======================================================
+     CENTER BRANDING OPACITY
+  ======================================================= */
 
   const brandingOpacity =
     clamp(
-      1 - scrollProgress / 0.45,
+      1 -
+        scrollProgress / 0.45,
       0,
       1
     );
 
-  /*
-    Normal hero content appears
-    near the end of the door animation.
-  */
+  /* =======================================================
+     HERO CONTENT OPACITY
+  ======================================================= */
 
   const heroContentOpacity =
     clamp(
-      (scrollProgress - 0.75) / 0.25,
+      (scrollProgress - 0.75) /
+        0.25,
       0,
       1
     );
 
+  /* =======================================================
+     RETURN
+  ======================================================= */
+
   return (
-
-    /*
-      IMPORTANT:
-
-      280vh gives the user enough
-      scroll distance to control
-      the entire entrance animation.
-    */
-
     <section
       ref={heroRef}
+      id="home"
       className="
         relative
         h-[280vh]
@@ -527,9 +528,9 @@ const Hero = () => {
         "
       >
 
-        {/* =====================================================
-            PARKING AREA / HOUSE BACKGROUND
-        ===================================================== */}
+        {/* ===================================================
+            BACKGROUND IMAGE
+        =================================================== */}
 
         <img
           src="/images/Car_Park.png"
@@ -542,26 +543,42 @@ const Hero = () => {
             object-cover
             object-center
           "
-         style={{
-  transform:
-    `scale(${1 + scrollProgress * 0.49})`,
+          style={{
+            /*
+              Slight initial scale prevents
+              visible edges when blur is applied.
+            */
 
-  filter: `
-    brightness(${backgroundBrightness})
-    blur(${imageBlur ? 6 : 0}px)
-  `,
+            transform:
+              `scale(${
+                1.05 +
+                scrollProgress * 0.49
+              })`,
 
-  transition:
-    "transform 80ms linear, filter 700ms ease",
+            /*
+              0.5 sec after page load:
 
-  willChange:
-    "transform, filter",
-}}
+              blur 0px → 6px
+
+              Smoothly transitions over 700ms.
+            */
+
+            filter: `
+              brightness(${backgroundBrightness})
+              blur(${imageBlur ? 6 : 0}px)
+            `,
+
+            transition:
+              "transform 80ms linear, filter 700ms ease",
+
+            willChange:
+              "transform, filter",
+          }}
         />
 
-        {/* =====================================================
+        {/* ===================================================
             DARK HERO OVERLAY
-        ===================================================== */}
+        =================================================== */}
 
         <div
           className="
@@ -572,13 +589,14 @@ const Hero = () => {
           style={{
             opacity:
               1 -
-              heroContentOpacity * 0.45,
+              heroContentOpacity *
+                0.45,
           }}
         />
 
-        {/* =====================================================
+        {/* ===================================================
             NORMAL HERO CONTENT
-        ===================================================== */}
+        =================================================== */}
 
         <div
           className="
@@ -593,8 +611,11 @@ const Hero = () => {
               heroContentOpacity,
 
             transform:
-              `translateY(${24 -
-                heroContentOpacity * 24}px)`,
+              `translateY(${
+                24 -
+                heroContentOpacity *
+                  24
+              }px)`,
 
             transition:
               "opacity 100ms linear, transform 100ms linear",
@@ -606,77 +627,107 @@ const Hero = () => {
               mx-auto
               w-full
               max-w-7xl
-              px-5
-              pt-20
+              px-6
+              pt-16
+
               sm:px-8
-              md:px-10
+              sm:pt-20
+
+              md:px-12
+
+              lg:px-16
+
+              xl:px-20
             "
           >
 
-            <div className="max-w-3xl">
+            <div
+              className="
+                max-w-[760px]
+              "
+            >
 
-              {/* Small Heading */}
+              {/* ===========================================
+                  EYEBROW
+              =========================================== */}
 
               <p
                 className="
                   mb-5
+                  font-['DM_Sans']
                   text-[10px]
                   font-semibold
                   uppercase
                   tracking-[0.3em]
                   text-[#D89B35]
-                  sm:text-sm
-                  sm:tracking-[0.35em]
+
+                  sm:text-xs
+                  sm:tracking-[0.4em]
+
+                  md:text-sm
                 "
               >
-                BUILDING YOUR FUTURE
+                WHERE VISION MEETS CRAFTSMANSHIP
               </p>
 
-              {/* Main Heading */}
+              {/* ===========================================
+                  MAIN HEADING
+              =========================================== */}
 
               <h1
-  className="
-    font-['Playfair_Display']
-    text-5xl
-    font-medium
-    uppercase
-    leading-[0.9]
-    tracking-[-0.03em]
-    text-white
-    drop-shadow-[0_4px_18px_rgba(0,0,0,0.45)]
-    
-    sm:text-6xl
-    md:text-7xl
-    lg:text-8xl
-    xl:text-[7rem]
-  "
->
-  HOMES
-  <br />
-  BUILT AROUND YOU
-</h1>
+                className="
+                  font-['Playfair_Display']
+                  text-5xl
+                  font-medium
+                  uppercase
+                  leading-[0.9]
+                  tracking-[-0.03em]
+                  text-white
+                  drop-shadow-[0_4px_18px_rgba(0,0,0,0.45)]
 
-              {/* Description */}
+                  sm:text-6xl
+
+                  md:text-7xl
+
+                  lg:text-8xl
+
+                  xl:text-[7rem]
+                "
+              >
+                HOMES
+                <br />
+                BUILT AROUND YOU
+              </h1>
+
+              {/* ===========================================
+                  DESCRIPTION
+              =========================================== */}
 
               <p
                 className="
                   mt-6
                   max-w-xl
+                  font-['DM_Sans']
                   text-sm
+                  font-normal
                   leading-7
                   text-white/85
+
                   sm:mt-7
                   sm:text-base
                   sm:leading-8
+
                   md:text-lg
                 "
               >
-                Building quality spaces
-                with trust, precision and
-                excellence.
+                Thoughtfully designed. Precisely built.
+                Creating timeless spaces where life
+                begins, grows and belongs.
               </p>
 
-              {/* Buttons */}
+              {/* ===========================================
+                  BUTTONS
+              =========================================== */}
 
               <div
                 className="
@@ -684,13 +735,16 @@ const Hero = () => {
                   flex
                   flex-col
                   gap-3
+
                   sm:mt-9
                   sm:flex-row
                   sm:gap-4
                 "
               >
 
-                {/* Explore Projects */}
+                {/* -----------------------------------------
+                    PROJECT BUTTON
+                ----------------------------------------- */}
 
                 <Link
                   to="/projects"
@@ -699,31 +753,39 @@ const Hero = () => {
                     inline-flex
                     items-center
                     justify-center
-                    bg-[#dad6d1]
+                    gap-3
+
+                    bg-[#D89B35]
+
                     px-6
                     py-3.5
+
+                    font-['DM_Sans']
                     text-xs
                     font-semibold
                     uppercase
-                    tracking-[0.12em]
+                    tracking-[0.14em]
                     text-[#171717]
+
                     shadow-lg
                     shadow-black/20
+
                     transition-all
                     duration-300
-                    hover:bg-[#eea83f]
+
                     hover:-translate-y-0.5
+                    hover:bg-[#BD8227]
                     hover:shadow-xl
+
                     sm:px-7
                     sm:py-4
                     sm:text-sm
                   "
                 >
-                  EXPLORE PROJECTS
+                  VIEW OUR PROJECTS
 
                   <span
                     className="
-                      ml-3
                       transition-transform
                       duration-300
                       group-hover:translate-x-1
@@ -731,10 +793,11 @@ const Hero = () => {
                   >
                     →
                   </span>
-
                 </Link>
 
-                {/* Contact */}
+                {/* -----------------------------------------
+                    CONTACT BUTTON
+                ----------------------------------------- */}
 
                 <Link
                   to="/contact"
@@ -744,32 +807,42 @@ const Hero = () => {
                     items-center
                     justify-center
                     gap-2
+
                     border
-                    border-white/70
-                    bg-[#D89B35]
+                    border-white/60
+
+                    bg-white/10
+
                     px-6
                     py-3.5
+
+                    font-['DM_Sans']
                     text-xs
                     font-semibold
                     uppercase
-                    tracking-[0.12em]
+                    tracking-[0.14em]
                     text-white
+
                     shadow-lg
                     shadow-black/20
+
                     backdrop-blur-md
+
                     transition-all
                     duration-300
-                    hover:border-[#d4c5aa]
-                    hover:bg-[#fff2db]
-                    hover:text-[#1F2426]
+
+                    hover:border-[#D89B35]
+                    hover:bg-[#D89B35]
+                    hover:text-[#171717]
+
                     sm:px-7
                     sm:py-4
                     sm:text-sm
                   "
                 >
-
                   <Phone
-                    size={17}
+                    size={16}
+                    strokeWidth={1.8}
                     className="
                       transition-transform
                       duration-300
@@ -777,8 +850,7 @@ const Hero = () => {
                     "
                   />
 
-                  CONTACT US
-
+                  BUILD WITH US
                 </Link>
 
               </div>
@@ -789,12 +861,11 @@ const Hero = () => {
 
         </div>
 
-        {/* =====================================================
+        {/* ===================================================
             SLIDER CONTROLS
-        ===================================================== */}
+        =================================================== */}
 
         {phase === "done" && (
-
           <div
             className="
               absolute
@@ -803,8 +874,10 @@ const Hero = () => {
               z-20
               flex
               gap-2
+
               sm:bottom-8
               sm:right-8
+
               lg:right-10
             "
           >
@@ -818,14 +891,20 @@ const Hero = () => {
                 w-10
                 items-center
                 justify-center
+
                 border
                 border-white/50
+
                 bg-black/10
+
                 text-white
+
                 backdrop-blur-sm
+
                 transition-all
                 hover:bg-white
                 hover:text-[#1F2426]
+
                 sm:h-12
                 sm:w-12
               "
@@ -842,10 +921,14 @@ const Hero = () => {
                 w-10
                 items-center
                 justify-center
+
                 bg-[#D89B35]
+
                 text-white
+
                 transition-all
                 hover:bg-[#BD8227]
+
                 sm:h-12
                 sm:w-12
               "
@@ -854,26 +937,26 @@ const Hero = () => {
             </button>
 
           </div>
-
         )}
 
-        {/* =====================================================
+        {/* ===================================================
             SCROLL INDICATOR
-        ===================================================== */}
+        =================================================== */}
 
         {scrollProgress < 0.9 && (
-
           <div
             className="
               absolute
               bottom-8
               left-1/2
               z-40
+
               flex
               -translate-x-1/2
               flex-col
               items-center
               gap-2
+
               text-white/70
             "
             style={{
@@ -889,12 +972,13 @@ const Hero = () => {
 
             <span
               className="
+                font-['DM_Sans']
                 text-[10px]
                 uppercase
                 tracking-[0.3em]
               "
             >
-              Scroll to enter
+              SCROLL TO ENTER
             </span>
 
             <div
@@ -904,9 +988,12 @@ const Hero = () => {
                 w-6
                 items-start
                 justify-center
+
                 rounded-full
+
                 border
                 border-white/50
+
                 p-1
               "
             >
@@ -922,12 +1009,11 @@ const Hero = () => {
             </div>
 
           </div>
-
         )}
 
-        {/* =====================================================
+        {/* ===================================================
             FULL SCREEN DOOR INTRO
-        ===================================================== */}
+        =================================================== */}
 
         <div
           className="
@@ -939,10 +1025,16 @@ const Hero = () => {
             overflow-hidden
           "
           style={{
+            /*
+              Door overlay remains visible
+              until the door is almost completely open.
+            */
+
             opacity:
               clamp(
                 1 -
-                  (scrollProgress - 0.85) /
+                  (scrollProgress -
+                    0.85) /
                     0.15,
                 0,
                 1
@@ -956,7 +1048,7 @@ const Hero = () => {
         >
 
           {/* =================================================
-              PARKING AREA BEHIND THE DOOR
+              PARKING AREA BEHIND DOOR
           ================================================= */}
 
           <div
@@ -980,12 +1072,18 @@ const Hero = () => {
               "
               style={{
                 transform:
-                  `scale(${1.05 +
-                    scrollProgress * 0.15})`,
+                  `scale(${
+                    1.05 +
+                    scrollProgress *
+                      0.15
+                  })`,
 
                 filter:
-                  `brightness(${0.3 +
-                    scrollProgress * 0.7})`,
+                  `brightness(${
+                    0.3 +
+                    scrollProgress *
+                      0.7
+                  })`,
 
                 transition:
                   "transform 80ms linear, filter 80ms linear",
@@ -1008,7 +1106,8 @@ const Hero = () => {
 
                 opacity:
                   0.25 +
-                  scrollProgress * 0.75,
+                  scrollProgress *
+                    0.75,
               }}
             />
 
@@ -1028,7 +1127,8 @@ const Hero = () => {
               opacity:
                 clamp(
                   1 -
-                    scrollProgress * 1.15,
+                    scrollProgress *
+                      1.15,
                   0,
                   1
                 ),
@@ -1050,6 +1150,7 @@ const Hero = () => {
                     #ffffff 0 1px,
                     transparent 1px 90px
                   ),
+
                   repeating-linear-gradient(
                     90deg,
                     #ffffff 0 1px,
@@ -1066,12 +1167,17 @@ const Hero = () => {
                 absolute
                 left-1/2
                 top-0
+
                 h-64
                 w-[40rem]
                 max-w-full
+
                 -translate-x-1/2
+
                 rounded-full
+
                 bg-[#D89B35]/10
+
                 blur-3xl
               "
             />
@@ -1101,16 +1207,18 @@ const Hero = () => {
             }}
           >
 
-            {/* =================================================
+            {/* ===============================================
                 ARCHITECTURAL FRAME
-            ================================================= */}
+            =============================================== */}
 
             <div
               className="
                 absolute
                 inset-0
+
                 border-[10px]
                 border-[#3d2a1b]
+
                 sm:border-[14px]
               "
             />
@@ -1123,12 +1231,16 @@ const Hero = () => {
                 left-0
                 right-0
                 top-0
+
                 h-5
+
                 bg-gradient-to-b
                 from-[#d7d0c4]
                 via-[#938a7b]
                 to-[#4c4338]
+
                 shadow-[0_5px_20px_rgba(0,0,0,.8)]
+
                 sm:h-7
               "
             />
@@ -1141,12 +1253,16 @@ const Hero = () => {
                 bottom-0
                 left-0
                 right-0
+
                 h-5
+
                 bg-gradient-to-t
                 from-[#d7d0c4]
                 via-[#938a7b]
                 to-[#4c4338]
+
                 shadow-[0_-5px_20px_rgba(0,0,0,.8)]
+
                 sm:h-7
               "
             />
@@ -1159,11 +1275,14 @@ const Hero = () => {
                 bottom-0
                 left-0
                 top-0
+
                 w-5
+
                 bg-gradient-to-r
                 from-[#d7d0c4]
                 via-[#938a7b]
                 to-[#4c4338]
+
                 sm:w-7
               "
             />
@@ -1176,24 +1295,29 @@ const Hero = () => {
                 bottom-0
                 right-0
                 top-0
+
                 w-5
+
                 bg-gradient-to-l
                 from-[#d7d0c4]
                 via-[#938a7b]
                 to-[#4c4338]
+
                 sm:w-7
               "
             />
 
-            {/* =================================================
+            {/* ===============================================
                 DOOR AREA
-            ================================================= */}
+            =============================================== */}
 
             <div
               className="
                 absolute
                 inset-[20px]
+
                 overflow-hidden
+
                 sm:inset-[28px]
               "
               style={{
@@ -1209,7 +1333,9 @@ const Hero = () => {
 
               <DoorLeaf
                 side="left"
-                progress={scrollProgress}
+                progress={
+                  scrollProgress
+                }
                 reduce={reduce}
               />
 
@@ -1217,23 +1343,28 @@ const Hero = () => {
 
               <DoorLeaf
                 side="right"
-                progress={scrollProgress}
+                progress={
+                  scrollProgress
+                }
                 reduce={reduce}
               />
 
-              {/* =================================================
+              {/* =============================================
                   CENTER BRANDING
-              ================================================= */}
+              ============================================= */}
 
               <div
                 className="
                   pointer-events-none
+
                   absolute
                   inset-0
                   z-30
+
                   flex
                   items-center
                   justify-center
+
                   text-center
                 "
                 style={{
@@ -1243,7 +1374,8 @@ const Hero = () => {
                   transform:
                     `scale(${
                       1 -
-                      scrollProgress * 0.12
+                      scrollProgress *
+                        0.12
                     })`,
 
                   transition:
@@ -1260,28 +1392,38 @@ const Hero = () => {
                   "
                 >
 
-                  {/* Logo */}
+                  {/* =========================================
+                      LOGO
+                  ========================================= */}
 
                   <div
                     className="
                       flex
                       h-16
                       w-16
+
                       items-center
                       justify-center
+
                       border
                       border-[#D89B35]/70
+
                       bg-black/30
+
                       text-[#D89B35]
+
                       backdrop-blur-sm
+
                       sm:h-20
                       sm:w-20
                     "
                   >
                     <span
                       className="
+                        font-['Playfair_Display']
                         text-3xl
-                        font-light
+                        font-medium
+
                         sm:text-4xl
                       "
                     >
@@ -1289,33 +1431,46 @@ const Hero = () => {
                     </span>
                   </div>
 
-                  {/* Welcome */}
+                  {/* =========================================
+                      WELCOME
+                  ========================================= */}
 
                   <p
                     className="
                       mt-6
+
+                      font-['DM_Sans']
                       text-[10px]
                       font-semibold
                       uppercase
                       tracking-[0.45em]
+
                       text-[#D89B35]
+
                       sm:text-xs
                     "
                   >
                     WELCOME TO
                   </p>
 
-                  {/* Company */}
+                  {/* =========================================
+                      COMPANY
+                  ========================================= */}
 
                   <h2
                     className="
                       mt-2
+
+                      font-['Playfair_Display']
                       text-3xl
-                      font-bold
+                      font-medium
                       uppercase
                       tracking-tight
+
                       text-white
+
                       drop-shadow-[0_3px_10px_rgba(0,0,0,.8)]
+
                       sm:text-5xl
                       md:text-6xl
                     "
@@ -1323,39 +1478,52 @@ const Hero = () => {
                     CHINIYAMAL
                   </h2>
 
-                  {/* Construction */}
+                  {/* =========================================
+                      CONSTRUCTION
+                  ========================================= */}
 
                   <p
                     className="
                       mt-1
+
+                      font-['DM_Sans']
                       text-[9px]
                       font-medium
                       uppercase
                       tracking-[0.5em]
+
                       text-white/70
+
                       sm:text-xs
                     "
                   >
                     CONSTRUCTION
                   </p>
 
-                  {/* Divider */}
+                  {/* =========================================
+                      DIVIDER
+                  ========================================= */}
 
                   <div
                     className="
                       mx-auto
                       mt-6
+
                       h-px
                       w-20
+
                       bg-[#D89B35]
                     "
                   />
 
-                  {/* Scroll instruction */}
+                  {/* =========================================
+                      SCROLL INSTRUCTION
+                  ========================================= */}
 
                   <div
                     className="
                       mt-7
+
                       flex
                       flex-col
                       items-center
@@ -1365,10 +1533,12 @@ const Hero = () => {
 
                     <span
                       className="
+                        font-['DM_Sans']
                         text-[10px]
                         font-semibold
                         uppercase
                         tracking-[0.35em]
+
                         text-white/80
                       "
                     >
@@ -1380,11 +1550,15 @@ const Hero = () => {
                         flex
                         h-10
                         w-6
+
                         items-start
                         justify-center
+
                         rounded-full
+
                         border
                         border-[#D89B35]/70
+
                         p-1
                       "
                     >
@@ -1392,8 +1566,11 @@ const Hero = () => {
                         className="
                           h-2
                           w-1
+
                           rounded-full
+
                           bg-[#D89B35]
+
                           animate-bounce
                         "
                       />
@@ -1416,13 +1593,18 @@ const Hero = () => {
           <div
             className="
               pointer-events-none
+
               absolute
               bottom-0
               left-1/2
+
               h-32
               w-[70%]
+
               -translate-x-1/2
+
               bg-[#D89B35]/10
+
               blur-[80px]
             "
           />
