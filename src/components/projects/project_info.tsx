@@ -46,9 +46,9 @@ const ProjectInfo = ({ projectId }: ProjectInfoProps) => {
 
         {/* Project Image */}
         <div className="overflow-hidden">
-          <img
-            src={project.image}
-            alt={project.title}
+         <img
+            src="/images/Resident.png"
+            alt="Residential Construction Project"
             className="h-full min-h-[350px] w-full object-cover sm:min-h-[500px] lg:min-h-[600px]"
           />
         </div>

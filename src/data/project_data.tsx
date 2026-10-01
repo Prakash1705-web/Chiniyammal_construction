@@ -6,7 +6,7 @@ export const projects: Project[] = [
     title: "Chiniyamal Residency",
     location: "Chennai",
     category: "Residential",
-    image: "/images/projects/project-1.jpg",
+    image: "/images/Resident.png",
     description:
       "A modern residential development designed with comfort, functionality, and quality in mind.",
   },

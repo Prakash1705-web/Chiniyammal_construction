@@ -21,7 +21,7 @@ const AppRoutes = () => {
       <Route element={<MainLayout />}>
 
         <Route
-          path="/"
+          path="/chiniyamal-construction/"
           element={<Home />}
         />
 
