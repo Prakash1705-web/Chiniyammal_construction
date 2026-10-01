@@ -12,5 +12,5 @@ export default defineConfig({
   resolve: {
     dedupe: ["react", "react-dom"],
   },
-    base: "/chiniyamal-construction/",
+    base: "/Chiniyammal_construction/",
 });
