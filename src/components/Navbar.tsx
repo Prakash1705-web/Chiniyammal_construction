@@ -5,6 +5,7 @@ import {
   Phone,
   ArrowUpRight,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -13,28 +14,28 @@ const Navbar = () => {
      NAVIGATION ITEMS
   ====================================================== */
 
-  const navItems = [
-    {
-      label: "Home",
-      id: "home",
-    },
-    {
-      label: "About",
-      id: "about",
-    },
-    {
-      label: "Projects",
-      id: "projects",
-    },
-    {
-      label: "Services",
-      id: "services",
-    },
-    {
-      label: "Contact",
-      id: "contact",
-    },
-  ];
+const navItems = [
+  {
+    label: "Home",
+    path: "/",
+  },
+  {
+    label: "About",
+    path: "/about",
+  },
+  {
+    label: "Projects",
+    path: "/projects",
+  },
+  {
+    label: "Services",
+    path: "/services",
+  },
+  {
+    label: "Contact",
+    path: "/contact",
+  },
+];
 
   /* =====================================================
      CLOSE MOBILE MENU
@@ -42,23 +43,6 @@ const Navbar = () => {
 
   const closeMenu = () => {
     setMenuOpen(false);
-  };
-
-  /* =====================================================
-     SCROLL TO SECTION
-  ====================================================== */
-
-  const scrollToSection = (id: string) => {
-    const section = document.getElementById(id);
-
-    if (section) {
-      section.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
-
-    closeMenu();
   };
 
   /* =====================================================
@@ -135,9 +119,9 @@ const Navbar = () => {
               LOGO
           ================================================== */}
 
-          <button
-            type="button"
-            onClick={() => scrollToSection("home")}
+          <Link
+            to="/"
+            onClick={closeMenu}
             className="
               group
               flex
@@ -174,7 +158,7 @@ const Navbar = () => {
             >
               CONSTRUCTION
             </span>
-          </button>
+          </Link>
 
 
           {/* =================================================
@@ -192,10 +176,9 @@ const Navbar = () => {
             "
           >
             {navItems.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => scrollToSection(item.id)}
+              <Link
+                key={item.path}
+                to={item.path}
                 className="
                   relative
                   py-2
@@ -218,7 +201,7 @@ const Navbar = () => {
                 "
               >
                 {item.label}
-              </button>
+              </Link>
             ))}
           </nav>
 
@@ -317,6 +300,7 @@ const Navbar = () => {
           inset-0
           z-[60]
           lg:hidden
+
           ${
             menuOpen
               ? "pointer-events-auto"
@@ -402,9 +386,9 @@ const Navbar = () => {
 
             {/* Logo */}
 
-            <button
-              type="button"
-              onClick={() => scrollToSection("home")}
+            <Link
+              to="/"
+              onClick={closeMenu}
               className="
                 flex
                 flex-col
@@ -434,7 +418,7 @@ const Navbar = () => {
               >
                 CONSTRUCTION
               </span>
-            </button>
+            </Link>
 
 
             {/* Close Button */}
@@ -503,10 +487,10 @@ const Navbar = () => {
             <nav className="flex flex-col">
 
               {navItems.map((item, index) => (
-                <button
-                  key={item.id}
-                  type="button"
-                  onClick={() => scrollToSection(item.id)}
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  onClick={closeMenu}
                   className="
                     group
                     flex
@@ -547,7 +531,7 @@ const Navbar = () => {
                       group-hover:text-[#D89B35]
                     "
                   />
-                </button>
+                </Link>
               ))}
 
             </nav>

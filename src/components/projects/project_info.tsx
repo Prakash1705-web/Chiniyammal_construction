@@ -30,7 +30,7 @@ const ProjectInfo = ({ projectId }: ProjectInfoProps) => {
           </p>
 
           <Link
-            to="/projects"
+            to="/Chiniyammal_construction/projects"
             className="mt-8 inline-flex border-b-2 border-[#D89B35] pb-2 text-sm font-semibold uppercase tracking-[0.15em] text-[#1F2426] transition-colors duration-300 hover:text-[#D89B35]"
           >
             BACK TO PROJECTS
@@ -45,12 +45,19 @@ const ProjectInfo = ({ projectId }: ProjectInfoProps) => {
       <div className="mx-auto grid w-full max-w-7xl gap-12 px-5 sm:px-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-start lg:gap-20 lg:px-10">
 
         {/* Project Image */}
-        <div className="overflow-hidden">
-         <img
-            src="/images/Resident.png"
-            alt="Residential Construction Project"
-            className="h-full min-h-[350px] w-full object-cover sm:min-h-[500px] lg:min-h-[600px]"
-          />
+        <div className="overflow-hidden mt-5">
+        <img
+          src={project.image}
+          alt={project.title}
+          className="
+            h-full
+            min-h-[350px]
+            w-full
+            object-cover
+            sm:min-h-[500px]
+            lg:min-h-[600px]
+          "
+        />
         </div>
 
         {/* Project Details */}
@@ -81,7 +88,7 @@ const ProjectInfo = ({ projectId }: ProjectInfoProps) => {
 
           {/* Back Button */}
           <Link
-            to="/projects"
+            to="/Chiniyammal_construction/projects"
             className="mt-10 inline-flex items-center border-b-2 border-[#D89B35] pb-2 text-sm font-semibold uppercase tracking-[0.15em] text-[#1F2426] transition-colors duration-300 hover:text-[#D89B35]"
           >
             BACK TO PROJECTS

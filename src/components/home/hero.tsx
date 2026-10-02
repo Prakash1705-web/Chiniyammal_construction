@@ -227,15 +227,48 @@ const Hero = () => {
               </p>
 
               <div className="mt-8 flex flex-col gap-3 sm:mt-9 sm:flex-row sm:gap-4">
-                <Link
+               <Link
                   to="/projects"
-                  className="group inline-flex items-center justify-center gap-3 bg-[#D89B35] px-6 py-3.5 font-['DM_Sans'] text-xs font-semibold uppercase tracking-[0.14em] text-[#171717] shadow-lg shadow-black/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#BD8227] hover:shadow-xl sm:px-7 sm:py-4 sm:text-sm"
+                  className="
+                    group
+                    inline-flex
+                    items-center
+                    justify-center
+                    gap-3
+                    bg-[#D89B35]
+                    px-6
+                    py-3.5
+                    font-['DM_Sans']
+                    text-xs
+                    font-semibold
+                    uppercase
+                    tracking-[0.14em]
+                    text-[#171717]
+                    shadow-lg
+                    shadow-black/20
+                    transition-all
+                    duration-300
+                    hover:-translate-y-0.5
+                    hover:bg-[#BD8227]
+                    hover:shadow-xl
+                    sm:px-7
+                    sm:py-4
+                    sm:text-sm
+                  "
                 >
-                  VIEW OUR PROJECTS
-                  <span className="transition-transform duration-300 group-hover:translate-x-1">
-                    →
-                  </span>
-                </Link>
+                VIEW OUR PROJECTS
+
+                <span
+                  className="
+                    transition-transform
+                    duration-300
+                    group-hover:translate-x-1
+                  "
+                >
+                  →
+                </span>
+              </Link>
+             
 
                 <Link
                   to="/contact"

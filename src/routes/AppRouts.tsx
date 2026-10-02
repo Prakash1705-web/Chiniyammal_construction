@@ -1,18 +1,15 @@
 import { Routes, Route } from "react-router-dom";
 
 import MainLayout from "../layouts/MainLayout";
-
-
-
-
-
-
 import Contact from "../pages/Contact";
 import Services from "../pages/services/services";
 import ProjectDetails from "../pages/Projects/Project_details";
 import Projects from "../pages/Projects/Projects";
 import About from "../pages/About";
 import Home from "../pages/Home";
+
+
+
 
 const AppRoutes = () => {
   return (
@@ -21,7 +18,7 @@ const AppRoutes = () => {
       <Route element={<MainLayout />}>
 
         <Route
-          path="/Chiniyammal_construction/"
+          path="/"
           element={<Home />}
         />
 
