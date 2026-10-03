@@ -106,7 +106,7 @@ const Footer = () => {
           <div className="mt-6 space-y-3">
 
             <p className="text-sm text-white/50">
-              +91 XXXXX XXXXX
+              +91 63800 89126
             </p>
 
             <p className="break-all text-sm text-white/50">

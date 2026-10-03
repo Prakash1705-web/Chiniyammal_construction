@@ -1,14 +1,12 @@
 import { Routes, Route } from "react-router-dom";
 
 import MainLayout from "../layouts/MainLayout";
-import Contact from "../pages/Contact";
-import Services from "../pages/services/services";
-import ProjectDetails from "../pages/Projects/Project_details";
-import Projects from "../pages/Projects/Projects";
-import About from "../pages/About";
 import Home from "../pages/Home";
-
-
+import About from "../pages/About";
+import Projects from "../pages/Projects/Projects";
+import ProjectDetails from "../pages/Projects/Project_details";
+import Services from "../components/home/services";
+import Contact from "../pages/Contact";
 
 
 const AppRoutes = () => {

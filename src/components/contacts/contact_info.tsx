@@ -6,7 +6,7 @@ import {
 
 const ContactInfo = () => {
   return (
-    <div className="max-w-xl">
+    <div className="max-w-xl p-8">
 
       {/* Heading */}
       <p className="mb-3 text-xs font-semibold uppercase tracking-[0.35em] text-[#D89B35]">
@@ -53,7 +53,7 @@ const ContactInfo = () => {
             </span>
 
             <p className="mt-1 text-base font-medium text-[#1F2426] sm:text-lg">
-              +91 XXXXX XXXXX
+              +91 63800 89126
             </p>
           </div>
 

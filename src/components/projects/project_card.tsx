@@ -9,7 +9,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
   return (
     <article
   className="
-    group w-[320px] m-5 overflow-hidden rounded-2xl bg-white shadow-[0_10px_35px_rgba(0,0,0,0.18)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(0,0,0,0.28)] lg:m-5 lg:w-[400px]  " >
+    group w-[300px] m-3 overflow-hidden rounded-2xl bg-white shadow-[0_10px_35px_rgba(0,0,0,0.18)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(0,0,0,0.28)] lg:m-3 lg:w-[400px] gap-3 " >
       <a
         href={`/Chiniyammal_construction/projects/${project.id}`}
         className="block"

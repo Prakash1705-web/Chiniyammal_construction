@@ -2,7 +2,7 @@ import { Send } from "lucide-react";
 
 const ContactForm = () => {
   return (
-    <form className="space-y-6">
+    <form className="space-y-6 p-10">
 
       {/* Name */}
       <div className="space-y-2">

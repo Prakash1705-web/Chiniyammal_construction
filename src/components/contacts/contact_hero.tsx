@@ -26,7 +26,7 @@ const ContactHero = () => {
           h-64
           w-64
           rounded-full
-          bg-[#D89B35]/10
+          bg-[#D89B35 ]/10
           blur-3xl
           sm:h-80
           sm:w-80

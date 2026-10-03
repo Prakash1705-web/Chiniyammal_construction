@@ -6,7 +6,7 @@ import {
   ArrowUpRight,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-
+import logo from "../assets/logo.png";
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -87,207 +87,232 @@ const navItems = [
           MAIN NAVBAR
       ====================================================== */}
 
-      <header
+<header
+  className="
+    fixed
+    left-0
+    top-0
+    z-[100]
+    w-full
+    border-b
+    border-white/10
+    bg-[#111416]/95
+    backdrop-blur-xl
+  "
+>
+  <div
+    className="
+      mx-auto
+      grid
+      h-20
+      w-full
+      max-w-7xl
+      grid-cols-[1fr_auto_1fr]
+      items-center
+      px-5
+      sm:px-8
+      lg:px-10
+    "
+  >
+
+    {/* ==============================
+        LOGO + BRAND NAME
+    ============================== */}
+
+    <Link
+      to="/"
+      onClick={closeMenu}
+      className="
+        group
+        flex
+        items-center
+        gap-3
+        justify-self-start
+      "
+      aria-label="Go to home"
+    >
+      <img
+        src={logo}
+        alt="Chiniyamal Construction"
         className="
-          fixed
-          left-0
-          top-0
-          z-50
-          w-full
-          border-b
-          border-white/10
-          bg-black/25
-          backdrop-blur-lg
+          h-12
+          w-12
+          object-contain
+          transition-transform
+          duration-300
+          group-hover:scale-105
+          sm:h-14
+          sm:w-14
+          lg:h-16
+          lg:w-16
         "
-      >
-        <div
+      />
+
+      <div className="flex flex-col leading-none">
+        <span
           className="
-            mx-auto
-            flex
-            h-20
-            w-full
-            max-w-7xl
-            items-center
-            justify-between
-            px-5
-            sm:px-8
-            lg:px-10
+            text-base
+            font-bold
+            tracking-tight
+            !text-white
+            transition-colors
+            duration-300
+            group-hover:!text-[#D89B35]
+            sm:text-lg
+            lg:text-xl
           "
         >
+          CHINIYAMAL
+        </span>
 
-          {/* =================================================
-              LOGO
-          ================================================== */}
-
-          <Link
-            to="/"
-            onClick={closeMenu}
-            className="
-              group
-              flex
-              flex-col
-              text-left
-              leading-none
-            "
-            aria-label="Go to home"
-          >
-            <span
-              className="
-                text-xl
-                font-bold
-                tracking-tight
-                text-white
-                transition-colors
-                duration-300
-                group-hover:text-[#D89B35]
-                sm:text-2xl
-              "
-            >
-              CHINIYAMAL
-            </span>
-
-            <span
-              className="
-                mt-1
-                text-[8px]
-                font-medium
-                tracking-[0.3em]
-                text-[#D89B35]
-                sm:text-[9px]
-              "
-            >
-              CONSTRUCTION
-            </span>
-          </Link>
+        <span
+          className="
+            mt-1
+            text-[7px]
+            font-medium
+            uppercase
+            tracking-[0.3em]
+            !text-[#D89B35]
+            sm:text-[8px]
+            lg:text-[9px]
+          "
+        >
+          CONSTRUCTION
+        </span>
+      </div>
+    </Link>
 
 
-          {/* =================================================
-              DESKTOP NAVIGATION
-              1024px+
-          ================================================== */}
+    {/* ==============================
+        DESKTOP NAVIGATION
+    ============================== */}
 
-          <nav
-            className="
-              hidden
-              items-center
-              gap-7
-              lg:flex
-              xl:gap-9
-            "
-          >
-            {navItems.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className="
-                  relative
-                  py-2
-                  text-sm
-                  font-medium
-                  text-white
-                  transition-colors
-                  duration-300
-                  hover:text-[#D89B35]
+    <nav
+      className="
+        hidden
+        items-center
+        justify-center
+        gap-7
+        lg:flex
+        xl:gap-9
+      "
+    >
+      {navItems.map((item) => (
+        <Link
+          key={item.path}
+          to={item.path}
+          className="
+            relative
+            whitespace-nowrap
+            py-2
+            text-sm
+            font-medium
+            !text-white
+            opacity-100
+            transition-all
+            duration-300
+            hover:!text-[#D89B35]
 
-                  after:absolute
-                  after:bottom-0
-                  after:left-0
-                  after:h-px
-                  after:w-0
-                  after:bg-[#D89B35]
-                  after:transition-all
-                  after:duration-300
-                  hover:after:w-full
-                "
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
-
-
-          {/* =================================================
-              DESKTOP CALL BUTTON
-          ================================================== */}
-
-          <div className="hidden items-center lg:flex">
-            <a
-              href="tel:+919999999999"
-              className="
-                group
-                inline-flex
-                items-center
-                gap-2
-                bg-[#D89B35]
-                px-5
-                py-3
-                text-xs
-                font-semibold
-                uppercase
-                tracking-[0.12em]
-                text-white
-                transition-all
-                duration-300
-                hover:bg-[#BD8227]
-              "
-            >
-              <Phone
-                size={15}
-                className="
-                  transition-transform
-                  duration-300
-                  group-hover:rotate-12
-                "
-              />
-
-              CALL US
-
-              <ArrowUpRight
-                size={14}
-                className="
-                  transition-transform
-                  duration-300
-                  group-hover:-translate-y-0.5
-                  group-hover:translate-x-0.5
-                "
-              />
-            </a>
-          </div>
+            after:absolute
+            after:bottom-0
+            after:left-0
+            after:h-[2px]
+            after:w-0
+            after:bg-[#D89B35]
+            after:transition-all
+            after:duration-300
+            hover:after:w-full
+          "
+        >
+          {item.label}
+        </Link>
+      ))}
+    </nav>
 
 
-          {/* =================================================
-              TABLET + MOBILE MENU BUTTON
-              Below 1024px
-          ================================================== */}
+    {/* ==============================
+        CALL BUTTON
+    ============================== */}
 
-          <button
-            type="button"
-            onClick={() => setMenuOpen(true)}
-            aria-label="Open navigation menu"
-            aria-expanded={menuOpen}
-            className="
-              flex
-              h-11
-              w-11
-              items-center
-              justify-center
-              border
-              border-white/20
-              bg-black/20
-              text-white
-              backdrop-blur-sm
-              transition-all
-              duration-300
-              hover:border-[#D89B35]
-              hover:text-[#D89B35]
-              lg:hidden
-            "
-          >
-            <Menu size={24} />
-          </button>
+    <div className="hidden justify-self-end lg:flex">
+      <a
+        href="tel:+919999999999"
+        className="
+          group
+          inline-flex
+          items-center
+          gap-2
+          bg-[#D89B35]
+          px-5
+          py-3
+          text-xs
+          font-semibold
+          uppercase
+          tracking-[0.12em]
+          !text-white
+          transition-all
+          duration-300
+          hover:bg-[#BD8227]
+        "
+      >
+        <Phone
+          size={15}
+          className="
+            transition-transform
+            duration-300
+            group-hover:rotate-12
+          "
+        />
 
-        </div>
-      </header>
+        CALL US
+
+        <ArrowUpRight
+          size={14}
+          className="
+            transition-transform
+            duration-300
+            group-hover:-translate-y-0.5
+            group-hover:translate-x-0.5
+          "
+        />
+      </a>
+    </div>
+
+
+    {/* ==============================
+        MOBILE / TABLET MENU
+    ============================== */}
+
+    <button
+      type="button"
+      onClick={() => setMenuOpen(true)}
+      aria-label="Open navigation menu"
+      aria-expanded={menuOpen}
+      className="
+        col-start-3
+        flex
+        h-11
+        w-11
+        items-center
+        justify-center
+        justify-self-end
+        border
+        border-white/20
+        bg-black/20
+        !text-white
+        backdrop-blur-sm
+        transition-all
+        duration-300
+        hover:border-[#D89B35]
+        hover:!text-[#D89B35]
+        lg:hidden
+      "
+    >
+      <Menu size={24} />
+    </button>
+
+  </div>
+</header>
 
 
       {/* =====================================================
@@ -350,7 +375,7 @@ const navItems = [
             max-w-md
             border-l
             border-white/10
-            bg-[#111416]
+            bg-[#30363a]
             shadow-[-20px_0_60px_rgba(0,0,0,.45)]
             transition-transform
             duration-500
@@ -556,7 +581,7 @@ const navItems = [
               </p>
 
               <a
-                href="tel:+919999999999"
+                href="tel:+9163800 89126"
                 onClick={closeMenu}
                 className="
                   flex
